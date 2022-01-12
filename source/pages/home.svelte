@@ -14,7 +14,11 @@
 	const notifications = [
 		{
 			title: 'Need your attention',
-			description: 'Your order from Choudhary Traders is due to arrive today.',
+			description: 'Your order from Choudhary Traders is due to arrive today',
+			action: {
+				label: 'Track it',
+				url: '/notifications/1234',
+			},
 		},
 	]
 </script>
@@ -34,7 +38,7 @@
 
 		<!-- Show the actions the store owner can take -->
 		<!-- This web app only shows the catalog page for now -->
-		<tr>
+		<tr class="center">
 			<td>
 				<Link to="/catalog">
 					<div id="link-to-catalog" class="card action-card unstyled-link">
@@ -90,10 +94,10 @@
 		border-spacing: 50px 0;
 	}
 	td {
-		padding: 10px 0;
+		padding: 1em 0;
 	}
 	tr {
-		padding: 10px 0;
+		padding: 1em 0;
 	}
 
 	.unstyled-link {

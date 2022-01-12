@@ -13,6 +13,9 @@ and split into modular components that can be embedded in your application
 easily. It uses the Webkit Speech Recognition API built into Chromium-based
 browsers and fuzzy search to return useful search results.
 
+[Here](https://drive.google.com/file/d/1Ruri4rxWJJN6yy5FdkJTKjcbP8q7sGed/view?usp=sharing)
+is a link to a video explaining and demonstrating the prototype.
+
 [![Interface Design](assets/interface.png)](<https://www.figma.com/file/pFLTxI3eLXvnoVyPqCYZZm/ONDC-Hackathon-Design-(Makers42)?node-id=48%3A592>)
 
 ## Challenge

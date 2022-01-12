@@ -48,12 +48,11 @@
 </script>
 
 <template>
-	<td>
+	<div class="center">
 		{#if view.state.isListening}
 			<div>
 				<img
 					style="height: 4em; width: 4em"
-					class="center"
 					src="/gifs/sound.gif"
 					alt="Listening..."
 				/>
@@ -63,21 +62,13 @@
 				<MicIcon size="42" />
 			</div>
 		{/if}
-	</td>
+	</div>
 </template>
 
 <style>
 	.center {
-		margin-left: auto;
-		margin-right: auto;
-		align-items: center;
-		justify-content: center;
-		top: 50%;
-		left: 50%;
-		max-width: 100%;
-		max-height: 100%;
-		overflow: auto;
-		padding: 2em;
-		padding-left: 1.1em;
+		margin-left: 9em;
+		margin-right: 9em;
+		text-align: center;
 	}
 </style>

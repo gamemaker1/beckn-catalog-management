@@ -43,22 +43,19 @@
 </template>
 
 <style>
+	img {
+		max-width: 52px;
+		min-width: 52px;
+	}
+
 	.center {
 		margin-left: auto;
 		margin-right: auto;
-		align-items: center;
-		justify-content: center;
-		top: 50%;
-		left: 50%;
-		max-width: 100%;
-		max-height: 100%;
-		overflow: auto;
-		padding: 2em;
-		padding-left: 1.1em;
+		text-align: center;
 	}
 	.title {
 		font-family: 'Poppins', sans-serif;
-		font-size: 20px;
+		font-size: 16px;
 		font-weight: 600;
 		margin: 0em;
 	}
@@ -66,7 +63,6 @@
 		font-family: 'Poppins', sans-serif;
 		font-size: 14px;
 		font-weight: 400;
-		margin: 0.2em;
 	}
 
 	.card {
@@ -82,15 +78,16 @@
 	}
 
 	.category-card {
-		height: 12em;
+		height: 6em;
 		width: 4em;
-		max-height: 12em;
+		max-height: 6em;
+		max-width: 4em;
 		margin: 0.5em 2em;
 	}
 
 	.carousel {
 		overflow: auto;
-		max-width: 26em;
+		max-width: 20em;
 		margin: 2em;
 	}
 </style>

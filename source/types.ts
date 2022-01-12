@@ -142,4 +142,8 @@ export interface Product {
 export interface Notification {
 	title: string
 	description: string
+	action: {
+		label: string
+		url: string
+	}
 }

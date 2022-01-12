@@ -5,11 +5,24 @@
 	import CategoryList from '../components/category-list.svelte'
 	import VoiceInput from '../components/voice-input.svelte'
 	import CreateProduct from '../components/create-product.svelte'
+	import NotificationDrawer from '../components/notification-drawer.svelte'
 
 	import { go as fuzzySearch } from 'fuzzysort'
 
 	import type { Product } from '../types'
 
+	// NOTE: These orderHistory are currently hardcoded, they should be fetched
+	// from somewhere.
+	const orderHistory = [
+		{
+			title: 'Your history',
+			description: 'You ordered 50 bourbon biscuits',
+			action: {
+				label: 'Repeat order',
+				url: '/orderHistory/5678',
+			},
+		},
+	]
 	// NOTE: Hardcoded
 	let categories = [
 		{
@@ -101,7 +114,7 @@
 	 */
 	const showVoiceSearchPanel = () => {
 		view.focus = 'search'
-		view.title = 'Search'
+		view.title = 'Search ONDC Catalog'
 		view.state = {
 			isListening: false,
 			error: undefined,
@@ -113,7 +126,7 @@
 	 */
 	const showCreateProductPanel = () => {
 		view.focus = 'create-product'
-		view.title = 'Create Product'
+		view.title = 'Create A New Product'
 		view.state = {}
 	}
 	/**
@@ -121,7 +134,7 @@
 	 */
 	const hidePanels = () => {
 		view.focus = 'categories'
-		view.title = 'Catalog'
+		view.title = 'Manage Catalog'
 		view.state = {}
 	}
 
@@ -130,6 +143,7 @@
 	 */
 	const onSpeechRecognition = (error?: Error, text?: string) => {
 		view.state.products = []
+		view.state.recognizedText = ''
 
 		// If there is an error, display it and return
 		if (error) {
@@ -148,16 +162,13 @@
 
 <main>
 	<!-- The page title -->
-	<h1 class="rounded">Manage Catalog</h1>
+	<h1 class="rounded">{view.title}</h1>
 
 	<!-- The main content on the page is in this table -->
-	<table class="center">
+	<table style="margin-left: 8em">
 		<tr>
-			<table style="width: 100%">
+			<table id="content">
 				<tr>
-					<td>
-						<span class="title left-align"> {view.title} </span>
-					</td>
 					{#if view.focus !== 'categories'}
 						<td>
 							<div class="title right-align" on:click={hidePanels}>
@@ -192,7 +203,22 @@
 							{/if}
 						</tr>
 					{:else}
-						<!-- By default, the top panel is a carousel of product categories -->
+						<!--
+							By default, the top panel shows the order history and a 
+							carousel of product categories
+						-->
+						<tr>
+							{#each orderHistory as order}
+								<div class="center card notification-card">
+									<h4 class="title">{order.title}</h4>
+									<span class="message">{order.description}</span>
+									<br />
+									<a class="message" href={order.action.url}>
+										{order.action.label}
+									</a>
+								</div>
+							{/each}
+						</tr>
 						<tr>
 							<CategoryList {categories} onSelect={filterProductsByCategory} />
 						</tr>
@@ -203,11 +229,13 @@
 
 		<!-- Show a list of products (either based on the category selected or the search query entered) -->
 		<tr>
-			<table style="width: 100%">
+			<table style="width: 90%">
 				{#if view.focus === 'categories'}
 					<!-- Else show the title bar and action buttons -->
 					<td>
-						<span class="title left-align"> Products </span>
+						<span class="title left-align" style="margin-left: 1em">
+							Products
+						</span>
 					</td>
 					<td>
 						<div class="title right-align" on:click={showVoiceSearchPanel}>
@@ -221,14 +249,15 @@
 					</td>
 				{/if}
 			</table>
+			<br />
 			<!-- The list of filtered products -->
 			{#if view.focus !== 'create-product'}
 				<ProductList
 					products={view.state.products}
 					emptyListMessage={view.focus === 'categories'
-						? 'Select a category to view its products'
+						? 'Click the search icon to do a voice enabled search on the crowdsourced ONDC catalog'
 						: view.focus === 'search'
-						? 'Click the microphone icon and speak your search query'
+						? 'Click the microphone icon and say your search query'
 						: ''}
 					{updateProduct}
 				/>
@@ -247,6 +276,10 @@
 
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+	a {
+		color: #a4abb8;
+	}
 
 	main {
 		font-family: 'Poppins', sans-serif;
@@ -271,21 +304,12 @@
 
 	table {
 		border-collapse: separate;
-		border-spacing: 2em 0;
+		border-spacing: 0.5em 0;
 	}
 
 	.center {
 		margin-left: auto;
 		margin-right: auto;
-		align-items: center;
-		justify-content: center;
-		top: 50%;
-		left: 50%;
-		max-width: 100%;
-		max-height: 100%;
-		overflow: auto;
-		padding: 2em;
-		padding-left: 1.1em;
 	}
 	.left-align {
 		display: block;
@@ -312,5 +336,25 @@
 	}
 	.error {
 		color: 'red';
+	}
+
+	.card {
+		box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+		border-radius: 1em;
+		padding: 2em;
+	}
+	.card:hover {
+		box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+	}
+	.card:active {
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+	}
+
+	.notification-card {
+		text-align: left;
+		height: 5em;
+		width: 16em;
+		margin: 0.4em;
+		padding-bottom: 2em;
 	}
 </style>

@@ -21,7 +21,7 @@
 
 <template>
 	{#if !products?.length}
-		<span class="message">{emptyListMessage}</span>
+		<span class="center message empty-list-message">{emptyListMessage}</span>
 	{:else}
 		<div class="items">
 			{#each products as product}
@@ -64,7 +64,7 @@
 												updateProduct(product)
 											}}
 										>
-											<MinusIcon size="24" />
+											<MinusIcon size="16" />
 										</div>
 										<span
 											style="display: inline-block"
@@ -79,7 +79,7 @@
 												updateProduct(product)
 											}}
 										>
-											<PlusIcon size="24" />
+											<PlusIcon size="16" />
 										</div>
 									</td>
 								</tr>
@@ -96,15 +96,7 @@
 	.center {
 		margin-left: auto;
 		margin-right: auto;
-		align-items: center;
-		justify-content: center;
-		top: 50%;
-		left: 50%;
-		max-width: 100%;
-		max-height: 100%;
-		overflow: auto;
-		padding: 2em;
-		padding-left: 1.1em;
+		text-align: center;
 	}
 	.title {
 		font-family: 'Poppins', sans-serif;
@@ -117,5 +109,11 @@
 		font-size: 14px;
 		font-weight: 400;
 		margin: 0.2em;
+	}
+	.empty-list-message {
+		display: block;
+		width: 24em;
+		word-wrap: break-word;
+		margin-left: 1em;
 	}
 </style>

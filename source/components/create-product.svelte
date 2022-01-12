@@ -13,7 +13,7 @@
 	// The options for several fields such as `payment`, `channel`, etc.
 	const paymentOptions = [
 		{
-			label: 'UPI (PayTM/Google Pay/PhonePe/MobiKwik/etc)',
+			label: 'UPI',
 			value: 'upi',
 		},
 		{
@@ -96,7 +96,7 @@
 		},
 		price: {
 			amount: 0,
-			currency: '',
+			currency: 'INR',
 		},
 		inventory: 0,
 		payment: [],
@@ -109,7 +109,7 @@
 <template>
 	<!-- Each input field has its own box -->
 	<!-- TODO: Allow voice input -->
-	<table style="display: block; text-align: center">
+	<table id="content" style="display: block; text-align: center">
 		<tr>
 			<label for="product-name-input">Name</label>
 			<input
@@ -148,40 +148,34 @@
 					id="product-price-input"
 					type="number"
 					bind:value={view.state.product.price.amount}
-					style="width: 4em;"
 				/>
-			</td>
-			<td>
-				<MultiSelect
+				<!--<MultiSelect 
+					style="width: 50%"
 					id="product-price-currency-input"
 					on:add={(event) =>
 						(view.state.product.price.currency = event.detail.option.value)}
 					options={priceCurrencyOptions}
 					maxSelect={1}
-					style="max-width: 20em;"
-				/>
+				/>-->
 			</td>
 		</tr>
 		<tr>
-			<label for="product-quantity-input">Quantity</label>
+			<label for="product-quantity-input">Quantity (in grams/litres)</label>
 		</tr>
-		<tr>
+		<tr style="width: 50%">
 			<td>
 				<input
 					id="product-quantity-input"
 					type="number"
 					bind:value={view.state.product.quantity.magnitude}
-					style="width: 4em;"
 				/>
-			</td>
-			<td>
-				<MultiSelect
+				<!--<MultiSelect
 					id="product-quantity-unit-input"
 					on:add={(event) =>
 						(view.state.product.quantity.unit = event.detail.option.value)}
 					options={quantityUnitOptions}
 					maxSelect={1}
-				/>
+				/>-->
 			</td>
 		</tr>
 		<tr>
@@ -193,7 +187,7 @@
 			/>
 		</tr>
 		<tr>
-			<label for="product-channel-input">Channel</label>
+			<label for="product-channel-input">Delivery Mode</label>
 			<MultiSelect
 				id="product-channel-input"
 				on:add={(event) =>
@@ -208,7 +202,29 @@
 				on:add={(event) =>
 					view.state.product.payment.push(event.detail.option.value)}
 				options={paymentOptions}
-				style="max-width: 20em;"
+			/>
+		</tr>
+		<tr>
+			<label for="product-image-input">Upload Image</label>
+			<input
+				id="product-image-input"
+				type="file"
+				accept="image/*"
+				capture="environment"
+				on:change={(event) => {
+					const files = event.target.files
+					let selectedFile
+
+					for (const file of files) {
+						if (file.type.match(/^image\//)) {
+							selectedFile = file
+							break
+						}
+					}
+
+					if (selectedFile)
+						view.state.product.image = URL.createObjectURL(selectedFile)
+				}}
 			/>
 		</tr>
 		<tr>
@@ -220,10 +236,13 @@
 </template>
 
 <style>
+	table {
+		max-width: 50%;
+	}
+
 	input {
 		font-family: 'Poppins', sans-serif;
 		font-size: 14px;
-		max-width: 20em;
 		width: 100%;
 		padding: 0.1em;
 		box-sizing: border-box;
